@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MyRocket>
+  <Name>4 stages test rocket</Name>
+  <Version>1.0</Version>
+  <Description>This is a ficional rocket, or at least we do not know any rocket with this specification!</Description>
+  <Stages>
+    <Stage id="0">
+      <RefeDiameter>2.0</RefeDiameter>
+      <Mass>66000.0</Mass>
+      <SpecImpuls0>230.0</SpecImpuls0>
+      <SpecImpulsVacu>230.0</SpecImpulsVacu>
+      <FuelMassFlow>
+        <line time="0.0" value="500.0" />
+      </FuelMassFlow>
+      <BurnTime>120.0</BurnTime>
+      <StageIgnitionTime>0.0</StageIgnitionTime>
+      <StageSeparationTime>120.0</StageSeparationTime>
+      <BurnChamberPressure>
+        <line time="0.0" value="6000000.0" />
+      </BurnChamberPressure>
+      <Epsilon>9.0</Epsilon>
+      <TherDegreeOfFreedom>10.0</TherDegreeOfFreedom>
+      <CharateristicVelocity>0.0</CharateristicVelocity>
+      <ETA0Bull>0.2</ETA0Bull>
+      <PrecisionBull>1.0E-6</PrecisionBull>
+      <BullIterations>15</BullIterations>
+      <kFactor>0.0</kFactor>
+      <AeroTables />
+    </Stage>
+    <Stage id="1">
+      <RefeDiameter>1.3</RefeDiameter>
+      <Mass>13000.0</Mass>
+      <SpecImpuls0>240.0</SpecImpuls0>
+      <SpecImpulsVacu>240.0</SpecImpulsVacu>
+      <FuelMassFlow>
+        <line time="0.0" value="60.0" />
+      </FuelMassFlow>
+      <BurnTime>200.0</BurnTime>
+      <StageIgnitionTime>0.0</StageIgnitionTime>
+      <StageSeparationTime>190.0</StageSeparationTime>
+      <BurnChamberPressure>
+        <line time="0.0" value="7000000.0" />
+      </BurnChamberPressure>
+      <Epsilon>10.0</Epsilon>
+      <TherDegreeOfFreedom>10.0</TherDegreeOfFreedom>
+      <CharateristicVelocity>0.0</CharateristicVelocity>
+      <ETA0Bull>0.2</ETA0Bull>
+      <PrecisionBull>1.0E-6</PrecisionBull>
+      <BullIterations>15</BullIterations>
+      <kFactor>0.0</kFactor>
+      <AeroTables />
+    </Stage>
+    <Stage id="2">
+      <RefeDiameter>0.8</RefeDiameter>
+      <Mass>3500.0</Mass>
+      <SpecImpuls0>290.0</SpecImpuls0>
+      <SpecImpulsVacu>290.0</SpecImpulsVacu>
+      <FuelMassFlow>
+        <line time="0.0" value="12.0" />
+      </FuelMassFlow>
+      <BurnTime>260.0</BurnTime>
+      <StageIgnitionTime>0.0</StageIgnitionTime>
+      <StageSeparationTime>260.0</StageSeparationTime>
+      <BurnChamberPressure>
+        <line time="0.0" value="6000000.0" />
+      </BurnChamberPressure>
+      <Epsilon>9.0</Epsilon>
+      <TherDegreeOfFreedom>10.0</TherDegreeOfFreedom>
+      <CharateristicVelocity>0.0</CharateristicVelocity>
+      <ETA0Bull>0.2</ETA0Bull>
+      <PrecisionBull>1.0E-6</PrecisionBull>
+      <BullIterations>15</BullIterations>
+      <kFactor>0.0</kFactor>
+      <AeroTables />
+    </Stage>
+    <Stage id="3">
+      <RefeDiameter>0.5</RefeDiameter>
+      <Mass>100.0</Mass>
+      <SpecImpuls0>0.0</SpecImpuls0>
+      <SpecImpulsVacu>0.0</SpecImpulsVacu>
+      <FuelMassFlow>
+        <line time="0.0" value="0.0" />
+      </FuelMassFlow>
+      <BurnTime>0.0</BurnTime>
+      <StageIgnitionTime>0.0</StageIgnitionTime>
+      <StageSeparationTime>0.0</StageSeparationTime>
+      <BurnChamberPressure>
+        <line time="0.0" value="0.0" />
+      </BurnChamberPressure>
+      <Epsilon>0.0</Epsilon>
+      <TherDegreeOfFreedom>10.0</TherDegreeOfFreedom>
+      <CharateristicVelocity>0.0</CharateristicVelocity>
+      <ETA0Bull>0.2</ETA0Bull>
+      <PrecisionBull>1.0E-6</PrecisionBull>
+      <BullIterations>15</BullIterations>
+      <kFactor>0.0</kFactor>
+      <AeroTables />
+    </Stage>
+  </Stages>
+  <ThetaTables />
+</MyRocket>

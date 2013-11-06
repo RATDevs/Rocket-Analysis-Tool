@@ -1,0 +1,9 @@
+bin
+bin/*
+
+LastRun/*.csv
+LastRun/*.txt
+LastRun/*.kml
+
+../CalculationTest
+../CalculationTest/*

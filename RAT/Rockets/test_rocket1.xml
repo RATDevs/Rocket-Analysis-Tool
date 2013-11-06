@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MyRocket>
+  <Name>1 stage test rocket</Name>
+  <Version>1.0</Version>
+  <Description>This is a ficional rocket, or at least we do not know any rocket with this specification!</Description>
+  <Stages>
+    <Stage id="0">
+      <RefeDiameter>0.8</RefeDiameter>
+      <Mass>8500.0</Mass>
+      <SpecImpuls0>220.0</SpecImpuls0>
+      <SpecImpulsVacu>250.0</SpecImpulsVacu>
+      <FuelMassFlow>
+        <line time="0.0" value="60.0" />
+      </FuelMassFlow>
+      <BurnTime>100.0</BurnTime>
+      <StageIgnitionTime>0.0</StageIgnitionTime>
+      <StageSeparationTime>0.0</StageSeparationTime>
+      <BurnChamberPressure>
+        <line time="0.0" value="6800000.0" />
+      </BurnChamberPressure>
+      <Epsilon>10.0</Epsilon>
+      <TherDegreeOfFreedom>8.0</TherDegreeOfFreedom>
+      <CharateristicVelocity>1974.0</CharateristicVelocity>
+      <ETA0Bull>0.2</ETA0Bull>
+      <PrecisionBull>1.0E-6</PrecisionBull>
+      <BullIterations>15</BullIterations>
+      <kFactor>0.0</kFactor>
+      <AeroTables />
+    </Stage>
+  </Stages>
+  <ThetaTables />
+</MyRocket>

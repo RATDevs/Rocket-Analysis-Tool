@@ -1,0 +1,4 @@
+#Wed Nov 06 14:51:16 CET 2013
+startDirection=0.0
+startLatitude=52.36307424663969
+startLongitude=13.503999710083008
