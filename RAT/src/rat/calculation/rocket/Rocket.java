@@ -46,6 +46,7 @@ public class Rocket extends Observable implements Serializable {
 	private double nextStageSeparationTime;
 	private double currentStageIgnitionTime;
 	private boolean lastStageActive;
+	private double currentFuelMassFlow;
 
 	/**
 	 * Constructor for empty rocket. Sets default parameters for difficult
@@ -179,18 +180,23 @@ public class Rocket extends Observable implements Serializable {
 		// engine is on and has burn time left
 		double currentStageBurnTime = time - currentStageIgnitionTime;
 		if (currentStage.getBurnTime() == 0) {
+			currentFuelMassFlow = 0.0d;
 			engineON = false;
 			return currentStage;
 		} else if (time >= currentStageIgnitionTime
 				&& currentStage.getBurnTime() >= currentStageBurnTime) {
-			rocketMass = rocketSeparationMass
-					- (currentStageBurnTime * currentStage
-							.getFuelMassFlow(time));
+			// old
+			// rocketMass = rocketSeparationMass
+			// - (currentStageBurnTime * currentStage
+			// .getFuelMassFlow(time));
+			currentFuelMassFlow = currentStage.getFuelMassFlow(time);
+			rocketMass -= delta_t * currentFuelMassFlow;
 			engineON = true;
 			return currentStage;
 		}
 		// ignition time not reach
 		else {
+			currentFuelMassFlow = 0.0d;
 			engineON = false;
 			return currentStage;
 		}
@@ -396,5 +402,20 @@ public class Rocket extends Observable implements Serializable {
 
 		this.setChanged();
 		this.notifyObservers(/* new FullRocketChange() */);
+	}
+
+	/**
+	 * @return the currentFuelMassFlow
+	 */
+	public double getCurrentFuelMassFlow() {
+		return currentFuelMassFlow;
+	}
+
+	/**
+	 * @param currentFuelMassFlow
+	 *            the currentFuelMassFlow to set
+	 */
+	public void setCurrentFuelMassFlow(double currentFuelMassFlow) {
+		this.currentFuelMassFlow = currentFuelMassFlow;
 	}
 }

@@ -29,7 +29,8 @@ public class RungeKutta extends TrajectoryCalculator {
 	public double tn;
 	private DoubleVector3 WGS84_O, r_E, r_I, rS_E;
 	private DoubleVector3 V_K_K;
-	private double p0, gamma0, theta0, tn2, tn4, timeGamma, startChi;
+	private double p0, gamma0, theta0, tn2, tn4, timeGamma, startChi,
+			fluelMassFlow;
 	private Forces force, force2, force3, force4;
 	private DoubleVectorN InpVec, inpVec1, inpVec2, inpVec3, SysVec1, SysVec2,
 			SysVec3;
@@ -65,6 +66,8 @@ public class RungeKutta extends TrajectoryCalculator {
 		SysVec1 = new DoubleVectorN(7);
 		SysVec2 = new DoubleVectorN(7);
 		SysVec3 = new DoubleVectorN(7);
+
+		fluelMassFlow = 0.0;
 	}
 
 	@Override
@@ -127,7 +130,7 @@ public class RungeKutta extends TrajectoryCalculator {
 						0), force.getr_E(), force.getr_I(), force.getrS_E(),
 				InpVec.getValue(6), new DoubleVector3(InpVec.getValue(0),
 						InpVec.getValue(1), InpVec.getValue(2)), force
-						.getF_P_B().x, force.getMachNumber()));
+						.getF_P_B().x, force.getMachNumber(), fluelMassFlow));
 
 		// init specific impulse models
 		Iterator<RocketStage> stageIter = rocket.getStages().iterator();
@@ -165,7 +168,9 @@ public class RungeKutta extends TrajectoryCalculator {
 			// new time: ( tn + 1/2 )
 			tn2 = tn + inputData.getDelta_t() * 0.5d;
 			// update rocket stage
-			stage = rocket.updateRocketStages(tn2, inputData.getDelta_t());
+			stage = rocket
+.updateRocketStages(tn + inputData.getDelta_t(),
+					inputData.getDelta_t() * -0.5d);
 			// calculate forces and angles
 			force2.calcValues(inpVec1, tn2, rocket, planet, inputData, p0,
 					stage);
@@ -205,7 +210,8 @@ public class RungeKutta extends TrajectoryCalculator {
 			// new time: ( tn + 1 )
 			tn4 = tn + inputData.getDelta_t();
 			// update rocket stage
-			stage = rocket.updateRocketStages(tn4, inputData.getDelta_t());
+			stage = rocket
+					.updateRocketStages(tn2, inputData.getDelta_t() * 0.5);
 			// calculate forces and angles
 			force4.calcValues(inpVec3, tn4, rocket, planet, inputData, p0,
 					stage);
@@ -223,6 +229,7 @@ public class RungeKutta extends TrajectoryCalculator {
 
 			InpVec.VecAdd(SysVec1); // --> solution for next time step
 
+			fluelMassFlow = rocket.getCurrentFuelMassFlow();
 			// Generate output
 			if (tn >= nextOutputTime) {
 				calculationResult.addCalculationStep(new CalculationStepResult(
@@ -233,7 +240,7 @@ public class RungeKutta extends TrajectoryCalculator {
 						InpVec.getValue(6), new DoubleVector3(InpVec
 								.getValue(0), InpVec.getValue(1), InpVec
 								.getValue(2)), force.getF_P_B().x, force
-								.getMachNumber()));
+								.getMachNumber(), fluelMassFlow));
 
 				nextOutputTime += inputData.getOutIterationTimeStep(tn);
 			}
@@ -252,7 +259,7 @@ public class RungeKutta extends TrajectoryCalculator {
 							.getrS_E(), InpVec.getValue(6), new DoubleVector3(
 							InpVec.getValue(0), InpVec.getValue(1), InpVec
 									.getValue(2)), force.getF_P_B().x, force
-							.getMachNumber()));
+							.getMachNumber(), fluelMassFlow));
 		}
 
 		// System.out.println("BUMMMMM!"); // What sound makes a rocket?

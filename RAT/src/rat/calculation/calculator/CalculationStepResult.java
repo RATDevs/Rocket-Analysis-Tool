@@ -50,11 +50,13 @@ public class CalculationStepResult implements Serializable {
 	/** Mach number of the missle. */
 	public final double machNumber;
 
+	public final double fluelMassFlow;
+
 	public CalculationStepResult(double time, double mass, double phi,
 			double alpha, double gamma, DoubleVector3 V_K_K, DoubleVector3 r_E,
 			DoubleVector3 r_I, DoubleVector3 surfPosition,
 			double groundDistance, DoubleVector3 WGS84_O, double thrust_B,
-			double mach) {
+			double mach, double fluelMassFlow) {
 		this.time = time;
 		this.mass = mass;
 		this.theta = phi;
@@ -70,6 +72,7 @@ public class CalculationStepResult implements Serializable {
 				.toDegrees(WGS84_O.y)), WGS84_O.z);
 		this.thrust_B = thrust_B;
 		this.machNumber = mach;
+		this.fluelMassFlow = fluelMassFlow;
 
 		// Consol output format
 		// System.out.println(this.toString());
@@ -117,7 +120,7 @@ public class CalculationStepResult implements Serializable {
 	}
 
 	public static String toFormatedStringRowDescription() {
-		return "Time; Distance; Height; Velocity; Theta; Gamma; Alpha; Thrust; Mass;";
+		return "Time; Distance; Height; Velocity; Theta; Gamma; Alpha; Thrust; Mass; FluelFlow";
 	}
 
 	/**
@@ -127,11 +130,11 @@ public class CalculationStepResult implements Serializable {
 	 */
 	public String getFormatedString() {
 		return String
-				.format("%7.2f; %6.4f; %6.4f; %6.2f; %4.2f; %4.2f; %4.2f; %7.3f; %6.2f;",
+				.format("%7.2f; %6.4f; %6.4f; %6.2f; %4.2f; %4.2f; %4.2f; %7.3f; %6.2f; %6.2f;",
 						time, groundDistance / 1000, WGS84_O.z / 1000,
 						speed_K.x, Math.toDegrees(theta),
 						Math.toDegrees(gamma), Math.toDegrees(alpha), thrust_B,
-						mass);
+						mass, fluelMassFlow);
 	}
 
 	/**
@@ -142,11 +145,11 @@ public class CalculationStepResult implements Serializable {
 	 */
 	public String getFormatedStringWithUnits() {
 		return String
-				.format("%6.2f s; %6.3f km; %6.3f km; %6.2f m/s; %4.2f; %4.2f; %4.2f; %7.3f kN; %6.2f kg;",
+				.format("%6.2f s; %6.3f km; %6.3f km; %6.2f m/s; %4.2f; %4.2f; %4.2f; %7.3f kN; %6.2f kg; %6.2f kg/s;",
 						time, groundDistance / 1000, WGS84_O.z / 1000,
 						speed_K.x, Math.toDegrees(theta),
 						Math.toDegrees(gamma), Math.toDegrees(alpha),
-						thrust_B / 1000.0f, mass);
+						thrust_B / 1000.0f, mass, fluelMassFlow);
 	}
 
 	public double getMachNumber() {

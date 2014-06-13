@@ -149,11 +149,11 @@ public class MenuBar extends JMenuBar {
 		public void actionPerformed(ActionEvent arg0) {
 			String aboutTitle = "About RAT";
 			String aboutMessage = "RAT - Rocket Analysis Tool\n"
-					+ "Version: 0.9.0\n\n"
+					+ "Version: 0.9.1\n\n"
 					+ "This programm is FREE and OPEN SOURCE.\n"
 					+ "Published with the Apache License Version 2.0."// TODO:
 					+ "\nhttps://code.google.com/p/rocketanalysistool/\n"
-					+ "\nCopyright \u00a9 2013\nGerhard Mesch, Michael Sams, Manuel Schmidt, Nils Vissmann\n"
+					+ "\nCopyright \u00a9 2014\nGerhard Mesch, Michael Sams, Manuel Schmidt, Nils Vissmann\n"
 					+ "with friendly support from Schmucker Technologie\n";
 			JOptionPane.showMessageDialog(null, aboutMessage, aboutTitle,
 					JOptionPane.INFORMATION_MESSAGE);

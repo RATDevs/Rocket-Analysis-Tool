@@ -26,7 +26,8 @@ public class CalculatorTemplate extends TrajectoryCalculator {
 	private DoubleVector3 WGS84_O, WGS84dot_O, r_E, r_O, r_I, rS_E, rS_E_alt;
 	private DoubleVector3 V_K_K, V_K_O, F_P_B, F_P_K, F_G_O, F_G_K, F_A_K,
 			F_T_K, A_K_K;
-	private double alpha, p0, gamma, theta, chi, groundDistance, machNumber;
+	private double alpha, p0, gamma, theta, chi, groundDistance, machNumber,
+			fluelMassFlow;
 
 	// control variables
 	private long iterCount = 0;
@@ -92,7 +93,7 @@ public class CalculatorTemplate extends TrajectoryCalculator {
 				calculationResult.addCalculationStep(new CalculationStepResult(
 						tn, rocket.getRocketMass(), theta, alpha, gamma, V_K_K,
 						r_E, r_I, rS_E, groundDistance, WGS84_O, F_P_B.x,
-						machNumber));
+						machNumber, fluelMassFlow));
 				nextOutputTime += inputData.getOutIterationTimeStep(tn);
 			}
 
@@ -104,7 +105,8 @@ public class CalculatorTemplate extends TrajectoryCalculator {
 		// add last iteration results
 		calculationResult.addCalculationStep(new CalculationStepResult(tn,
 				rocket.getRocketMass(), theta, alpha, gamma, V_K_K, r_E, r_I,
-				rS_E, groundDistance, WGS84_O, F_P_B.x, machNumber));
+				rS_E, groundDistance, WGS84_O, F_P_B.x, machNumber,
+				fluelMassFlow));
 		// System.out.println("BUMMMMM!"); // What sound makes a rocket?
 		long end = System.currentTimeMillis();
 		System.out.println(super.name + " calculation time: " + (end - start)

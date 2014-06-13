@@ -36,7 +36,7 @@ public class RocketStage implements Serializable {
 	private LinkedList<DoubleVector2> burnChamPressure = new LinkedList<DoubleVector2>();
 
 	// mode variables for LinkedList values
-	private int fuelMassFlowMode = 0;
+	private int fuelMassFlowMode = 1;
 	private int burnChamPresMode = 0;
 
 	// Reference diameter of this stage [m].
@@ -355,7 +355,7 @@ public class RocketStage implements Serializable {
 				current = next; // set lower bound
 				next = iter.next(); // set upper bound
 				// if between lower and upper bound --> interpolate
-				if (time >= current.t && time < next.value) {
+				if (time >= current.t && time < next.t) {
 					double distance = next.t - current.t;
 					double nextFactor = (time - current.t) / distance;
 					double currentFactor = (next.t - time) / distance;
@@ -397,14 +397,20 @@ public class RocketStage implements Serializable {
 	 */
 	public double getFuelMassFlow(double time) {
 		double absolutStageTime = time - stageActivationTime;
+		double returnValue = 0;
 		switch (fuelMassFlowMode) {
 		case 0:
-			return discretValueSampling(fuelMassFlow, absolutStageTime);
+			returnValue = discretValueSampling(fuelMassFlow, absolutStageTime);
+			break;
 		case 1:
-			return linearInterpolation(fuelMassFlow, absolutStageTime);
+			returnValue = linearInterpolation(fuelMassFlow, absolutStageTime);
+			break;
 		default:
-			return -1.0d;
+			returnValue = -1.0d;
+			break;
 		}
+		// System.out.println(returnValue);
+		return returnValue;
 	}
 
 	public void setFuelMassFlow(int editMode, double time, double fuelMassFlow) {

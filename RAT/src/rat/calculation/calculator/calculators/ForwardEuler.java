@@ -30,7 +30,7 @@ public class ForwardEuler extends TrajectoryCalculator {
 	private DoubleVector3 omegaIE_E, omegaIE_O, omegaEO_O, omegaEO_K;
 
 	private double alpha, p0, gamma, theta, chi, groundDistance, machNumber,
-			timeGamma, startChi;
+			timeGamma, startChi, fluelMassFlow;
 
 	// control variables
 	private long iterCount = 0;
@@ -140,10 +140,12 @@ public class ForwardEuler extends TrajectoryCalculator {
 					planet.g0);
 		}
 
+		fluelMassFlow = 0.0;
 		// write initial (zero) step
 		calculationResult.addCalculationStep(new CalculationStepResult(tn,
 				rocket.getRocketMass(), theta, alpha, gamma, V_K_K, r_E, r_I,
-				rS_E, groundDistance, WGS84_O, F_P_B.x, machNumber));
+				rS_E, groundDistance, WGS84_O, F_P_B.x, machNumber,
+				fluelMassFlow));
 		// abort conditions: hit ground or flight time to long
 		while (tn < inputData.getCancelTime() && WGS84_O.z >= 0.0) {
 			// theta and alpha
@@ -203,6 +205,7 @@ public class ForwardEuler extends TrajectoryCalculator {
 			// Update forces ml 231
 			// ***********************************************
 			stage = rocket.updateRocketStages(tn, inputData.getDelta_t());
+			fluelMassFlow = rocket.getCurrentFuelMassFlow();
 
 			if (rocket.isEngineOn()) {
 				// get specific impulse
@@ -296,7 +299,7 @@ public class ForwardEuler extends TrajectoryCalculator {
 				calculationResult.addCalculationStep(new CalculationStepResult(
 						tn, rocket.getRocketMass(), theta, alpha, gamma, V_K_K,
 						r_E, r_I, rS_E, groundDistance, WGS84_O, F_P_B.x,
-						machNumber));
+						machNumber, fluelMassFlow));
 				nextOutputTime += inputData.getOutIterationTimeStep(tn);
 			}
 
@@ -308,7 +311,8 @@ public class ForwardEuler extends TrajectoryCalculator {
 		// add last iteration results
 		calculationResult.addCalculationStep(new CalculationStepResult(tn,
 				rocket.getRocketMass(), theta, alpha, gamma, V_K_K, r_E, r_I,
-				rS_E, groundDistance, WGS84_O, F_P_B.x, machNumber));
+				rS_E, groundDistance, WGS84_O, F_P_B.x, machNumber,
+				fluelMassFlow));
 
 		// System.out.println("BUMMMMM!"); // What sound makes a rocket?
 		long end = System.currentTimeMillis();
