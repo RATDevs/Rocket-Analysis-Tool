@@ -1,3 +1,6 @@
+known bugs:
+	x GUI reset values, but simulation still keeps the old values
+
 Planned features:
 	x Output the aero data interpolation 
 	x Create a theta shoot range optimizer
