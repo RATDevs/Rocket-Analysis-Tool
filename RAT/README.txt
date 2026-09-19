@@ -21,14 +21,19 @@ Developer setup:
 - Example (Linux/macOS): export JAVA_HOME=/path/to/jdk-21
 - Example (Windows PowerShell): $env:JAVA_HOME="C:\Program Files\Java\jdk-21"
 
-Build from the RAT directory:
+Build from the RAT directory (Linux/macOS):
 - javac --release 21 -cp "Libs/*" -d bin $(find src -name '*.java' | sort)
 
-Run the calculation smoke test from the RAT directory:
+Run the calculation smoke test from the RAT directory (Linux/macOS):
 - java -cp "bin:Libs/*" rat.main.CalculationTest
 
-Run the Swing UI from the RAT directory:
+Run the Swing UI from the RAT directory (Linux/macOS):
 - java -cp "bin:Libs/*:lang" rat.main.RATmain
+
+Windows PowerShell equivalents from the RAT directory:
+- javac --release 21 -cp "Libs/*" -d bin (Get-ChildItem -Recurse src -Filter *.java | ForEach-Object { $_.FullName })
+- java -cp "bin;Libs/*" rat.main.CalculationTest
+- java -cp "bin;Libs/*;lang" rat.main.RATmain
 
 Bundled library inventory checked for the Java 21 upgrade:
 - Libs/jdom-2.0.5.jar
