@@ -153,13 +153,14 @@ public abstract class GeneralDataInputFrame extends JFrame {
 
 	protected void saveData() throws InvalidDataException {
 		List<String[]> data = new ArrayList<String[]>();
-		@SuppressWarnings("unchecked")
-		Vector<Vector<String>> dataVector = _tblModel.getDataVector();
+		@SuppressWarnings("rawtypes")
+		Vector<Vector> dataVector = _tblModel.getDataVector();
 		for (int i = 0; i < dataVector.size(); i++) {
-			Vector<String> entry = dataVector.get(i);
+			@SuppressWarnings("rawtypes")
+			Vector entry = dataVector.get(i);
 			String[] e = new String[entry.size()];
 			for (int j = 0; j < entry.size(); j++) {
-				e[j] = entry.get(j);
+				e[j] = (String) entry.get(j);
 			}
 			data.add(e);
 		}

@@ -1,0 +1,29 @@
+name: Java 21 validation
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: RAT
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Compile sources
+        run: |
+          mkdir -p bin
+          javac --release 21 -cp "Libs/*" -d bin $(find src -name '*.java' | sort)
+
+      - name: Run calculation smoke test
+        run: java -cp "bin:Libs/*" rat.main.CalculationTest
