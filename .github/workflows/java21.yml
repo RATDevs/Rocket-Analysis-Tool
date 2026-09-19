@@ -42,4 +42,4 @@ jobs:
           status=$?
           set -e
           cat /tmp/rat-ui.log
-          test "$status" -eq 0 -o "$status" -eq 124
+          test "$status" -eq 0 || test "$status" -eq 124
