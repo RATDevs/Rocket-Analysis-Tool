@@ -29,3 +29,10 @@ jobs:
 
       - name: Run calculation smoke test
         run: java -cp "bin:Libs/*" rat.main.CalculationTest
+
+      - name: Run Swing UI smoke test
+        run: |
+          timeout 15s xvfb-run -a java -cp "bin:Libs/*:lang" rat.main.RATmain > /tmp/rat-ui.log 2>&1
+          status=$?
+          cat /tmp/rat-ui.log
+          test "$status" -eq 0 -o "$status" -eq 124

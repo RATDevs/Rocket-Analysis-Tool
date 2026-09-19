@@ -42,4 +42,4 @@ Bundled library inventory checked for the Java 21 upgrade:
 - Libs/swingx-ws-2009_06_14.jar
 
 Compatibility note:
-- jdeps on JDK 21 reports removed sun.misc BASE64 APIs inside Libs/swingx-ws-2009_06_14.jar. RAT still uses JXMapKit from that library for the map UI, so map-related functionality should be smoke-tested on Java 21 and the dependency should be refreshed in a follow-up change.
+- jdeps on JDK 21 reports removed sun.misc BASE64 APIs inside Libs/swingx-ws-2009_06_14.jar. RAT still uses JXMapKit from that library for the map UI, so the Java 21 validation now includes both a calculation smoke test and a short Swing UI startup smoke test. The dependency should still be refreshed in a follow-up change.
