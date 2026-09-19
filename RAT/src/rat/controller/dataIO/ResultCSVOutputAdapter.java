@@ -34,7 +34,7 @@ public class ResultCSVOutputAdapter implements IDataOutputAdapter {
 
 			// Create line-String
 			String line = "";
-			// TODO: Schon ma was von String buffer gehört
+			// TODO: Replace repeated string concatenation with a StringBuffer
 			line += Double.toString(step.time) + ",";
 
 			line += Double.toString(step.mass) + ",";

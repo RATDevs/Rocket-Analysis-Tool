@@ -65,25 +65,25 @@ public class RocketXMLInputAdapter {
 			Element stages = root.getChild("Stages");
 			LinkedList<RocketStage> rocketStages = new LinkedList<RocketStage>();
 			for (Element stage : stages.getChildren()) {
-				RocketStage rocketStage = new RocketStage(new Integer(
-						stage.getAttributeValue("id")));
+				RocketStage rocketStage = new RocketStage(parseInteger(stage
+						.getAttributeValue("id")));
 
-				rocketStage.setRefeDiameter(new Double(stage
+				rocketStage.setRefeDiameter(parseDouble(stage
 						.getChildText("RefeDiameter")));
-				rocketStage.setMass0(new Double(stage.getChildText("Mass")));
+				rocketStage.setMass0(parseDouble(stage.getChildText("Mass")));
 
-				rocketStage.setSpecImpuGround(new Double(stage
+				rocketStage.setSpecImpuGround(parseDouble(stage
 						.getChildText("SpecImpuls0")));
-				rocketStage.setSpecImpuVacuum(new Double(stage
+				rocketStage.setSpecImpuVacuum(parseDouble(stage
 						.getChildText("SpecImpulsVacu")));
 
 				Element fuelMassFlow = stage.getChild("FuelMassFlow");
 				LinkedList<DoubleVector2> fuelMassFlowList = new LinkedList<DoubleVector2>();
 				for (Element listEntry : fuelMassFlow.getChildren()) {
-					double time = new Double(
-							listEntry.getAttributeValue("time"));
-					double value = new Double(
-							listEntry.getAttributeValue("value"));
+					double time = parseDouble(listEntry
+							.getAttributeValue("time"));
+					double value = parseDouble(listEntry
+							.getAttributeValue("value"));
 
 					DoubleVector2 entry = new DoubleVector2(time, value);
 					fuelMassFlowList.add(entry);
@@ -94,39 +94,39 @@ public class RocketXMLInputAdapter {
 						.getChild("BurnChamberPressure");
 				LinkedList<DoubleVector2> burnChamPressureList = new LinkedList<DoubleVector2>();
 				for (Element listEntry : burnChamPressure.getChildren()) {
-					double time = new Double(
-							listEntry.getAttributeValue("time"));
-					double value = new Double(
-							listEntry.getAttributeValue("value"));
+					double time = parseDouble(listEntry
+							.getAttributeValue("time"));
+					double value = parseDouble(listEntry
+							.getAttributeValue("value"));
 
 					DoubleVector2 entry = new DoubleVector2(time, value);
 					burnChamPressureList.add(entry);
 				}
 				rocketStage.setBurnChamPressureList(burnChamPressureList);
 
-				rocketStage.setBurnTime(new Double(stage
+				rocketStage.setBurnTime(parseDouble(stage
 						.getChildText("BurnTime")));
-				rocketStage.setStageIgnitionTime(new Double(stage
+				rocketStage.setStageIgnitionTime(parseDouble(stage
 						.getChildText("StageIgnitionTime")));
-				rocketStage.setStageSeparationTime(new Double(stage
+				rocketStage.setStageSeparationTime(parseDouble(stage
 						.getChildText("StageSeparationTime")));
 				rocketStage
-						.setEpsilon(new Double(stage.getChildText("Epsilon")));
+						.setEpsilon(parseDouble(stage.getChildText("Epsilon")));
 				String therDeg = stage.getChildText("TherDegreeOfFreedom");
 				if (therDeg != null) {
-					rocketStage.setTherDegrOfFreedom(new Double(therDeg));
+					rocketStage.setTherDegrOfFreedom(parseDouble(therDeg));
 				}
 				String carVelo = stage.getChildText("CharateristicVelocity");
 				if (carVelo != null) {
-					rocketStage.setCharacteristicVeleocity(new Double(carVelo));
+					rocketStage.setCharacteristicVeleocity(parseDouble(carVelo));
 				}
-				rocketStage.setEta0Bull(new Double(stage
+				rocketStage.setEta0Bull(parseDouble(stage
 						.getChildText("ETA0Bull")));
-				rocketStage.setPrecBull(new Double(stage
+				rocketStage.setPrecBull(parseDouble(stage
 						.getChildText("PrecisionBull")));
-				rocketStage.setAeroKFactor(new Double(stage
+				rocketStage.setAeroKFactor(parseDouble(stage
 						.getChildText("kFactor")));
-				rocketStage.setBullIterations(new Integer(stage
+				rocketStage.setBullIterations(parseInteger(stage
 						.getChildText("BullIterations")));
 
 				// Get Aero-Table
@@ -137,14 +137,14 @@ public class RocketXMLInputAdapter {
 							"AeroTableName").getValue());
 
 					for (Element aeroTableEntry : aeroTable.getChildren("line")) {
-						double mach = new Double(
-								aeroTableEntry.getAttributeValue("mach"));
-						double cd0EngOn = new Double(
-								aeroTableEntry.getAttributeValue("CD0EngON"));
-						double cd0EngOff = new Double(
-								aeroTableEntry.getAttributeValue("CD0EngOFF"));
-						double clAlpha = new Double(
-								aeroTableEntry.getAttributeValue("CLalpha"));
+						double mach = parseDouble(aeroTableEntry
+								.getAttributeValue("mach"));
+						double cd0EngOn = parseDouble(aeroTableEntry
+								.getAttributeValue("CD0EngON"));
+						double cd0EngOff = parseDouble(aeroTableEntry
+								.getAttributeValue("CD0EngOFF"));
+						double clAlpha = parseDouble(aeroTableEntry
+								.getAttributeValue("CLalpha"));
 
 						AeroDataEntry entry = new AeroDataEntry(mach, cd0EngOn,
 								cd0EngOff, clAlpha);
@@ -167,8 +167,8 @@ public class RocketXMLInputAdapter {
 				String thetaTableName = thetaTable.getAttributeValue("Name");
 				ThetaList thetaDataTable = new ThetaList(thetaTableName);
 				for (Element entry : thetaTable.getChildren()) {
-					double t = new Double(entry.getAttributeValue("t"));
-					double phi = new Double(entry.getAttributeValue("theta"));
+					double t = parseDouble(entry.getAttributeValue("t"));
+					double phi = parseDouble(entry.getAttributeValue("theta"));
 					ThetaEntry rocketPhiEntry = new ThetaEntry(t, phi);
 					thetaDataTable.list.add(rocketPhiEntry);
 				}
@@ -196,5 +196,13 @@ public class RocketXMLInputAdapter {
 	private static boolean isPathOk(String p) {
 		// TODO: Check whether path points to a file
 		return true;
+	}
+
+	private static double parseDouble(String value) {
+		return Double.parseDouble(value);
+	}
+
+	private static int parseInteger(String value) {
+		return Integer.parseInt(value);
 	}
 }
