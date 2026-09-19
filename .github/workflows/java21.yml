@@ -27,12 +27,19 @@ jobs:
           mkdir -p bin
           javac --release 21 -cp "Libs/*" -d bin $(find src -name '*.java' | sort)
 
+      - name: Install UI smoke-test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+
       - name: Run calculation smoke test
         run: java -cp "bin:Libs/*" rat.main.CalculationTest
 
       - name: Run Swing UI smoke test
         run: |
+          set +e
           timeout 15s xvfb-run -a java -cp "bin:Libs/*:lang" rat.main.RATmain > /tmp/rat-ui.log 2>&1
           status=$?
+          set -e
           cat /tmp/rat-ui.log
           test "$status" -eq 0 -o "$status" -eq 124
