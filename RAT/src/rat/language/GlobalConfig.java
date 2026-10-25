@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 
 /**
  * 
- * @author Manuel Schmidt, Nils Viﬂmann
+ * @author Manuel Schmidt, Nils Vissmann
  * 
  */
 public class GlobalConfig {
