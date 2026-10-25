@@ -9,9 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    defaults:
-      run:
-        working-directory: RAT
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -24,8 +21,8 @@ jobs:
 
       - name: Compile sources
         run: |
-          mkdir -p bin
-          javac --release 21 -cp "Libs/*" -d bin $(find src -name '*.java' | sort)
+          mkdir -p target/classes
+          javac --release 21 -cp "Libs/*" -d target/classes $(find src/main/java -name '*.java' | sort)
 
       - name: Install UI smoke-test dependencies
         run: |
@@ -33,12 +30,12 @@ jobs:
           sudo apt-get install -y xvfb
 
       - name: Run calculation smoke test
-        run: java -cp "bin:Libs/*" rat.main.CalculationTest
+        run: java -cp "target/classes:Libs/*:src/main/resources" rat.main.CalculationTest
 
       - name: Run Swing UI smoke test
         run: |
           set +e
-          timeout 15s xvfb-run -a java -cp "bin:Libs/*:lang" rat.main.RATmain > /tmp/rat-ui.log 2>&1
+          timeout 15s xvfb-run -a java -cp "target/classes:Libs/*:src/main/resources" rat.main.RATmain > /tmp/rat-ui.log 2>&1
           status=$?
           set -e
           cat /tmp/rat-ui.log

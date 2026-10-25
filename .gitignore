@@ -1,10 +1,9 @@
-bin
-bin/*
+/target/
+bin/
+*.class
 
 LastRun/*.csv
 LastRun/*.txt
 LastRun/*.kml
 
-../CalculationTest
-../CalculationTest/*
 /console.txt
