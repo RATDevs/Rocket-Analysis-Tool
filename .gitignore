@@ -1,4 +1,5 @@
 /target/
+/dependency-reduced-pom.xml
 bin/
 *.class
 
@@ -7,3 +8,4 @@ LastRun/*.txt
 LastRun/*.kml
 
 /console.txt
+.vscode/settings.json
