@@ -18,9 +18,7 @@
         <dependency>
             <groupId>org.jdom</groupId>
             <artifactId>jdom2</artifactId>
-            <version>2.0.5</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/Libs/jdom-2.0.5.jar</systemPath>
+            <version>2.0.6.1</version>
         </dependency>
         <dependency>
             <groupId>org.math.plot</groupId>
@@ -66,7 +64,6 @@
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <extraJars>
-                                <extraJar>${project.basedir}/Libs/jdom-2.0.5.jar</extraJar>
                                 <extraJar>${project.basedir}/Libs/jmathplotOWN.jar</extraJar>
                                 <extraJar>${project.basedir}/Libs/swingx-all-1.6.4.jar</extraJar>
                                 <extraJar>${project.basedir}/Libs/swingx-ws-2009_06_14.jar</extraJar>
