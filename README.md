@@ -30,35 +30,25 @@ $env:JAVA_HOME="C:\Program Files\Java\jdk-21"
 
 ## Build and run
 
-The source tree follows the standard Maven layout. Until the Maven build is added, compile from the repository root.
-
-Linux/macOS:
+Build from the repository root with Maven:
 
 ```sh
-mkdir -p target/classes
-javac --release 21 -cp "Libs/*" -d target/classes $(find src/main/java -name '*.java' | sort)
+mvn clean verify
 ```
 
-Run the calculation smoke test:
+Run the calculation smoke test after building:
 
 ```sh
-java -cp "target/classes:Libs/*:src/main/resources" rat.main.CalculationTest
+java -cp target/rocket-analysis-tool.jar rat.main.CalculationTest
 ```
 
-Run the Swing UI:
+Launch the application from the repository root:
 
 ```sh
-java -cp "target/classes:Libs/*:src/main/resources" rat.main.RATmain
+java -jar target/rocket-analysis-tool.jar
 ```
 
-Windows PowerShell equivalents:
-
-```powershell
-New-Item -ItemType Directory -Force target/classes
-javac --release 21 -cp "Libs/*" -d target/classes (Get-ChildItem -Recurse src/main/java -Filter *.java | ForEach-Object { $_.FullName })
-java -cp "target/classes;Libs/*;src/main/resources" rat.main.CalculationTest
-java -cp "target/classes;Libs/*;src/main/resources" rat.main.RATmain
-```
+The executable JAR includes the language bundles and bundled runtime libraries. Run it with the repository root as the working directory so that mutable files continue to use `config/`, `Rockets/`, and `LastRun/`.
 
 ## Bundled libraries
 
