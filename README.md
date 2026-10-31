@@ -52,7 +52,6 @@ The executable JAR includes the language bundles and bundled runtime libraries. 
 
 ## Bundled libraries
 
-- `Libs/jdom-2.0.5.jar`
 - `Libs/jmathplotOWN.jar`
 - `Libs/swingx-all-1.6.4.jar`
 - `Libs/swingx-ws-2009_06_14.jar`
