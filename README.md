@@ -54,20 +54,13 @@ The executable JAR includes the language bundles and bundled runtime libraries. 
 
 - `Libs/jmathplotOWN.jar`
 - `Libs/swingx-all-1.6.4.jar`
-- JXMapViewer2 2.8.1 and its Maven dependencies
+- `Libs/swingx-ws-2009_06_14.jar`
 
 Third-party license notices are in [`docs/licenses/third-party/`](docs/licenses/third-party/).
-JXMapViewer2 is licensed under the LGPL-3.0; its source is available at
-https://github.com/msteiger/jxmapviewer2. RAT's source and Maven build allow
-rebuilding the application with a modified version of the library.
 
-## OpenStreetMap tiles
+## Compatibility note
 
-The map uses the public OpenStreetMap tile service under its
-[tile usage policy](https://operations.osmfoundation.org/policies/tiles/).
-Tiles are cached in `~/.rocket-analysis-tool/tilecache` and retained until
-that directory is deleted. Delete it if updated map tiles are needed. The
-service is intended for light use; heavy use requires another tile provider.
+`jdeps` on JDK 21 reports removed `sun.misc` BASE64 APIs inside `swingx-ws-2009_06_14.jar`. RAT still uses JXMapKit from that library for the map UI. The Java 21 validation therefore includes a calculation smoke test and a short Swing UI startup smoke test. The map dependency should be refreshed in a follow-up change.
 
 ## Archived reference material
 
