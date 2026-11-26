@@ -53,10 +53,11 @@ The executable JAR includes the language bundles and bundled runtime libraries. 
 ## Bundled libraries
 
 - `Libs/jmathplotOWN.jar`
-- `Libs/swingx-all-1.6.4.jar`
 - JXMapViewer2 2.8.1 and its Maven dependencies
 
 Third-party license notices are in [`docs/licenses/third-party/`](docs/licenses/third-party/).
+SwingX was removed because the map now uses JXMapViewer2 and no remaining code
+depends on SwingX.
 JXMapViewer2 is licensed under the LGPL-3.0; its source is available at
 https://github.com/msteiger/jxmapviewer2. RAT's source and Maven build allow
 rebuilding the application with a modified version of the library.
