@@ -9,17 +9,27 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.SwingConstants;
+import javax.swing.event.MouseInputListener;
 
-import org.jdesktop.swingx.JXMapKit;
-import org.jdesktop.swingx.JXMapViewer;
-import org.jdesktop.swingx.mapviewer.GeoPosition;
-import org.jdesktop.swingx.painter.Painter;
+import org.jxmapviewer.JXMapViewer;
+import org.jxmapviewer.OSMTileFactoryInfo;
+import org.jxmapviewer.cache.FileBasedLocalCache;
+import org.jxmapviewer.input.PanMouseInputListener;
+import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
+import org.jxmapviewer.painter.Painter;
+import org.jxmapviewer.viewer.DefaultTileFactory;
+import org.jxmapviewer.viewer.GeoPosition;
 
 import rat.calculation.ProjectData;
 import rat.controller.project.ProjectController;
@@ -33,7 +43,7 @@ import rat.controller.updateObjects.LocationLongitudeChange;
 @SuppressWarnings("serial")
 public class TabPanelMap extends JPanel implements Observer {
 
-	private JXMapKit map;
+	private JXMapViewer map;
 	private ProjectController controller;
 	private double start_latitude;
 	private double start_longitude;
@@ -51,30 +61,64 @@ public class TabPanelMap extends JPanel implements Observer {
 		setStartPosition(controller.getLatitude(), controller.getLongitude());
 		setFocusStart();
 
-		/**
-		 * Possibility of NASA- Maps -> Doesn't work in Germany
-		 */
-		// WMSService wms = new WMSService();
-		// wms.setLayer("BMNG");
-		// wms.setBaseUrl("http://wms.jpl.nasa.gov/wms.cgi?");
-		// TileFactory fact = new WMSTileFactory(wms);
-		// map.setTileFactory(fact);
-
 	}
 
 	private void initComponents() {
 
-		map = new JXMapKit();
-		map.getMainMap().addMouseListener(new MapMouseListener());
-		map.setDefaultProvider(JXMapKit.DefaultProviders.OpenStreetMaps);
-		map.getMainMap().setOverlayPainter(new MapPainter());
-		map.setMiniMapVisible(false);
+		DefaultTileFactory factory = new DefaultTileFactory(new OSMTileFactoryInfo());
+		factory.setUserAgent("Rocket-Analysis-Tool/0.9.2 (+https://github.com/RATDevs/Rocket-Analysis-Tool)");
+		factory.setLocalCache(new FileBasedLocalCache(
+				new File(System.getProperty("user.home"), ".rocket-analysis-tool/tilecache"), false));
+		map = new JXMapViewer();
+		map.setTileFactory(factory);
+		map.setZoom(10);
+		MouseInputListener pan = new PanMouseInputListener(map);
+		map.addMouseListener(pan);
+		map.addMouseMotionListener(pan);
+		map.addMouseWheelListener(new ZoomMouseWheelListenerCursor(map));
+		map.addMouseListener(new MapMouseListener());
+		map.setOverlayPainter(new MapPainter());
 
 		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.weightx = 1;
 		gbc.weighty = 1;
 		add(map, gbc);
+
+		JPanel zoomControls = new JPanel(new GridBagLayout());
+		JButton zoomIn = new JButton("+");
+		JButton zoomOut = new JButton("-");
+		JSlider zoom = new JSlider(SwingConstants.VERTICAL,
+				factory.getInfo().getMinimumZoomLevel(), factory.getInfo().getMaximumZoomLevel(), map.getZoom());
+		zoom.setInverted(true);
+		zoomIn.addActionListener(e -> map.setZoom(map.getZoom() - 1));
+		zoomOut.addActionListener(e -> map.setZoom(map.getZoom() + 1));
+		zoom.addChangeListener(e -> map.setZoom(zoom.getValue()));
+		map.addPropertyChangeListener("zoom", e -> zoom.setValue(map.getZoom()));
+		GridBagConstraints controls = new GridBagConstraints();
+		controls.gridx = 0;
+		controls.gridy = 0;
+		zoomControls.add(zoomIn, controls);
+		controls.gridy++;
+		controls.fill = GridBagConstraints.VERTICAL;
+		controls.weighty = 1;
+		zoomControls.add(zoom, controls);
+		controls.gridy++;
+		controls.fill = GridBagConstraints.NONE;
+		controls.weighty = 0;
+		zoomControls.add(zoomOut, controls);
+		gbc.gridx = 1;
+		gbc.weightx = 0;
+		add(zoomControls, gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.gridwidth = 2;
+		gbc.weighty = 0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		add(new JLabel("© OpenStreetMap contributors — https://www.openstreetmap.org/copyright"), gbc);
 	}
 
 	/**
@@ -121,8 +165,10 @@ public class TabPanelMap extends JPanel implements Observer {
 	 * Method to show postion of detonation and focus on it
 	 */
 	public void paintTarget(List<Double> latitude, List<Double> longitude) {
-		setEndPosition(latitude, longitude);
-		setFocusEnd();
+		if (!latitude.isEmpty() && latitude.size() == longitude.size()) {
+			setEndPosition(latitude, longitude);
+			setFocusEnd();
+		}
 	}
 
 	/**
@@ -132,6 +178,7 @@ public class TabPanelMap extends JPanel implements Observer {
 
 		@Override
 		public void paint(Graphics2D g, JXMapViewer map, int arg2, int arg3) {
+			g = (Graphics2D) g.create();
 
 			// convert from Vwport to world bitmap
 			Rectangle rect = map.getViewportBounds();
@@ -173,7 +220,7 @@ public class TabPanelMap extends JPanel implements Observer {
 				/**
 				 * Get MousePosition and set as new Startposition
 				 */
-				JXMapViewer mapV = map.getMainMap();
+				JXMapViewer mapV = map;
 				Rectangle rect = mapV.getViewportBounds();
 				me.translatePoint(rect.x, rect.y);
 				GeoPosition gp = mapV.getTileFactory().pixelToGeo(
@@ -265,6 +312,7 @@ public class TabPanelMap extends JPanel implements Observer {
 
 		@Override
 		public void paint(Graphics2D g, JXMapViewer map, int arg2, int arg3) {
+			g = (Graphics2D) g.create();
 
 			// convert from Vwport to world bitmap
 			Rectangle rect = map.getViewportBounds();
@@ -303,6 +351,7 @@ public class TabPanelMap extends JPanel implements Observer {
 	private void paintDistanceByGeoPoints(Graphics2D g, JXMapViewer map,
 			int arg2, int arg3) {
 
+		g = (Graphics2D) g.create();
 		List<GeoPosition> region = new ArrayList<GeoPosition>();
 		Rectangle rect = map.getViewportBounds();
 		g.translate(-rect.x, -rect.y);
